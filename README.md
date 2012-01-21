@@ -20,6 +20,14 @@ Use the latest version of bundler (v1.1):
 
     $ sudo gem install bundler --pre
 
+Check out this git repository:
+
+    $ git clone git@github.com:NilsLattek/ember-node-rakepipeline-boilerplate.git
+
+Remove git history if you want to use this example as a template for your project:
+
+    $ rm -rf .git
+
 Install required gems:
 
     $ bundle install --binstubs
@@ -29,14 +37,6 @@ Install node.js if you haven't already: http://nodejs.org/
 Install npm:
 
     $ curl http://npmjs.org/install.sh | sh
-
-Check out this git repository:
-
-    $ git clone https://github.com/NilsLattek/ember-node-rakepipeline-boilerplate.git
-
-Remove git history if you want to use this example as a template for your project:
-
-    $ rm -rf .git
 
 Install node packages for the node.js server:
 
