@@ -1,0 +1,5 @@
+# ignore js files in the following folders:
+/public/*
+/assets/*
+/tmp/*
+./README.md

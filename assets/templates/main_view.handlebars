@@ -1,0 +1,10 @@
+
+{{view Todos.CreateTodoView id="new-todo" placeholder="What needs to be done?"}}
+
+{{view Todos.StatsView id="stats"}}
+
+{{view SC.Checkbox class="mark-all-done" title="Mark All as Done" valueBinding="Todos.todosController.allAreDone"}}
+
+{{#collection contentBinding="Todos.todosController" tagName="ul" itemClassBinding="content.isDone"}}
+  {{view SC.Checkbox titleBinding="content.title" valueBinding="content.isDone"}}
+{{/collection}}

@@ -1,0 +1,71 @@
+# credits to http://stackoverflow.com/a/8564949/296042
+
+require "json"
+require "uglifier"
+require "rake-pipeline-web-filters"
+
+# this gives you concat, coffee_script, and minispade methods
+require "rake-pipeline-web-filters/helpers"
+
+class HandlebarsFilter < Rake::Pipeline::Filter
+  def initialize(&block)
+    block ||= proc { |input| input.sub(/\.handlebars$/, '.js') }
+    super(&block)
+  end
+
+  def generate_output(inputs, output)
+    inputs.each do |input|
+      output.write "return Ember.Handlebars.compile(#{input.read.to_json})"
+    end
+  end
+end
+
+# process all js, css and html files in app/assets
+input "assets"
+
+# processed files should be outputted to public
+output "public"
+
+match "libs/*.js" do
+  concat [
+    "js/libs/jquery.js",
+    "js/libs/ember.js",
+    "js/libs/minispade.js"
+  ], "application.libs.js"
+end
+
+# process all coffee files
+#match "**/*.coffee" do
+match "js/{models,controllers,views,states}/**/*.js" do
+  # compile all CoffeeScript files. the output file
+  # for the compilation should be the input name
+  # with the .coffee extension replaced with .js
+  #coffee_script
+  #filter Rake::Pipeline::Web::Filters::CoffeeScriptFilter
+
+  filter Rake::Pipeline::Web::Filters::MinispadeFilter,
+    :module_id_generator => proc { |input| input.path.sub(/js\//, '').sub(/\.js$/, '') }
+
+  filter Rake::Pipeline::ConcatFilter, "application.scripts.js"
+end
+
+# Take all SCSS inputs and compile them with Sass
+#match "*.scss" do
+#  filter Rake::Pipeline::Web::Filters::SassCompiler
+#end
+
+match "**/*.handlebars" do
+  filter HandlebarsFilter
+  minispade :module_id_generator => proc { |input| input.path.sub(/js\//, '').sub(/\.js$/, '') }
+  concat "application.templates.js"
+end
+
+
+match "*.js" do
+  #if ENV['RAKEP_ENV'] == "production"
+    #uglify
+    concat ["application.libs.js", "application.templates.js", "application.scripts.js"], "js/application.js"
+  #else
+  #  concat
+  #end
+end
