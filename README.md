@@ -1,3 +1,8 @@
+Deprecated in favor of [https://github.com/NilsLattek/ember-grunt-template](https://github.com/NilsLattek/ember-grunt-template)
+
+
+
+
 ##ember.js + node.js + rake-pipeline
 
 This example shows how to work with ember.js and node.js using rake-pipeline as the build tool.
